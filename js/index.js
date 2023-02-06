@@ -50,9 +50,9 @@ function construirFormularioEditar(atividade,formularioAtualizar,inputAtividadeA
     inputAtividadeAtualizar.value = atividade.atividade;
     inputDataAtividadeAtualizar.setAttribute("value",atividade.dataAtividade);
     selectTagsPrioridadeAtualizar.innerHTML = '';
-    arrayOpcoes.forEach((opcao) => {
+    arrayOpcoes.forEach((opcao, index) => {
             const optionTagPropriedade = document.createElement('option');
-            optionTagPropriedade.value = opcao;
+            optionTagPropriedade.value = index;
             optionTagPropriedade.textContent = opcao;
             selectTagsPrioridadeAtualizar.appendChild(optionTagPropriedade);
     });
@@ -62,7 +62,7 @@ function construirFormularioEditar(atividade,formularioAtualizar,inputAtividadeA
 function getOpcoes(){
     arrayOpcoes.map((opcao, index) => {
         const optionTagPropriedade = document.createElement('option');
-        optionTagPropriedade.value = opcao;
+        optionTagPropriedade.value = index;
         optionTagPropriedade.textContent = opcao;
         selectTagsPrioridade.appendChild(optionTagPropriedade);
     });
@@ -97,7 +97,7 @@ function main(){
         atualizar();
         inputAtividade.value = "";
         inputDataAtividade.value = "";
-        selectTagsPrioridade.value = arrayOpcoes[0];
+        selectTagsPrioridade.value = 0;
     });
 }
 
@@ -239,7 +239,7 @@ function addAtividade(element, index){
     descricaoAtividade.id = `atividade${index}`;
     tituloAtividade.setAttribute("for",ID);
     tituloAtividade.innerText = element.atividade;
-    prioridadeAtividade.innerText =  element.tagPrioridade;
+    prioridadeAtividade.innerText =  arrayOpcoes[element.tagPrioridade];
     
     let data = new Date(element.dataAtividade);
     let dataFormatada = ((data.getDate() + 1 )) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear(); 
