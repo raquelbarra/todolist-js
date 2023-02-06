@@ -112,3 +112,57 @@ h2 {
 .none {
     display: none;
 }
+
+@media screen and (max-width: 600px) {
+  body {
+    background-image: url('../img/min-bg.jpg');
+    background-size:100cqmax;
+  }
+    .todo-container {
+        max-width: 90%;
+    }
+
+    .nova-atividade > form {
+        flex-direction: column;
+    }
+
+    #input-atividade, #input-data-atividade {
+        margin-bottom: 10px;
+    }
+
+    .nova-atividade > input, select, button {
+        margin-bottom: 10px;
+    }
+
+    .lista-de-atividades ul > li {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    li > div {
+        width: 100% !important;
+    }
+
+    li> div > label {
+        margin-left: 10px;
+        font-weight: bold;
+    }
+
+    li > p {
+        font-style: italic;
+        border-top: 1px solid #CCC;
+        padding: 5px;
+    }
+
+    .lista-de-atividades ul > li > div:last-child > button{
+        margin: 0;
+    }
+
+    .lista-de-atividades ul > li > div:last-child > button:last-child{
+        margin-left: 10px;
+    }
+
+    .editar-atividade > form {
+        flex-direction: column;
+    }
+}
