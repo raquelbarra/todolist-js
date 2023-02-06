@@ -18,6 +18,7 @@ function construirFormularioNovo(){
     inputDataAtividade.id = 'input-data-atividade';
     inputDataAtividade.type = 'date';
     inputDataAtividade.required = true;
+    inputDataAtividade.placeholder = "Informe a data";
     botao.textContent = 'Adicionar';
     botao.type = 'submit';
     formulario.appendChild(inputAtividade);
