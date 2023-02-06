@@ -165,4 +165,8 @@ h2 {
     .editar-atividade > form {
         flex-direction: column;
     }
+
+    input[type="date"]{
+        width: 100%;
+    }
 }

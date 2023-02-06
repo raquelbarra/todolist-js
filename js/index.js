@@ -19,6 +19,13 @@ function construirFormularioNovo(){
     inputDataAtividade.type = 'date';
     inputDataAtividade.required = true;
     inputDataAtividade.placeholder = "Informe a data";
+
+    let dataAtual = new Date();
+    let dataAtualFormat = dataAtual.toISOString().substr(0, 10);
+
+    inputDataAtividade.setAttribute("value", dataAtualFormat);
+    inputDataAtividade.innerText = dataAtualFormat;
+
     botao.textContent = 'Adicionar';
     botao.type = 'submit';
     formulario.appendChild(inputAtividade);
@@ -98,6 +105,9 @@ function main(){
         atualizar();
         inputAtividade.value = "";
         inputDataAtividade.value = "";
+        let dataA = new Date();
+        let dataAFormat = dataA.toISOString().substr(0, 10);
+        inputDataAtividade.value = dataAFormat;
         selectTagsPrioridade.value = 0;
     });
 }
