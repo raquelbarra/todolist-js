@@ -6,7 +6,7 @@ Este projeto foi criado para fins de estudo.
 A aplicação é uma todolist (lista de tarefas), com JS.
 
 ## Tecnologia:
-Html, CSS, Javascript e Vue3 (API de Opções).
+Html, CSS, Javascript.
 
 ## Objetivo:
 Criar um todolist que realize as ações:
