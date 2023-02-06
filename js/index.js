@@ -11,14 +11,14 @@ class Opcao {
 }
 
 const arrayOpcoes = ['Altíssima', 'Alta', 'Normal', 'Baixa'];
-const listaAtividades = [];
+let listaAtividades = baixarLista();
 const formulario = document.createElement('form');
 const inputAtividade = document.createElement('input');
 const inputDataAtividade = document.createElement('input');
 const selectTagsPrioridade = document.createElement('select');
 const botao = document.createElement('button');
 
-function buildAplication(){
+function construirFormularioNovo(){
     const divNovaAtividade = document.querySelector('.nova-atividade');
     selectTagsPrioridade.required = true;
     inputAtividade.id = 'input-atividade';
@@ -35,6 +35,38 @@ function buildAplication(){
     formulario.appendChild(selectTagsPrioridade);
     formulario.appendChild(botao);
     divNovaAtividade.appendChild(formulario);
+}
+
+function construirFormularioEditar(atividade,formularioAtualizar,inputAtividadeAtualizar,inputDataAtividadeAtualizar,selectTagsPrioridadeAtualizar,botaoAtualizar,botaoCancelar,boxEditarAtividade){
+    selectTagsPrioridadeAtualizar.required = true;
+    inputAtividadeAtualizar.id = 'input-atividade';
+    inputAtividadeAtualizar.type = 'text';
+    inputAtividadeAtualizar.placeholder = 'Informe a Atividade';
+    inputAtividadeAtualizar.required = true;
+    inputDataAtividadeAtualizar.id = 'input-data-atividade';
+    inputDataAtividadeAtualizar.type = 'date';
+    inputDataAtividadeAtualizar.required = true;
+    botaoAtualizar.textContent = 'Atualizar';
+    botaoCancelar.textContent = 'Cancelar';
+    botaoAtualizar.type = 'submit';
+    botaoCancelar.type = 'submit';
+    formularioAtualizar.appendChild(inputAtividadeAtualizar);
+    formularioAtualizar.appendChild(inputDataAtividadeAtualizar);
+    formularioAtualizar.appendChild(selectTagsPrioridadeAtualizar);
+    formularioAtualizar.appendChild(botaoAtualizar);
+    formularioAtualizar.appendChild(botaoCancelar);
+    boxEditarAtividade.appendChild(formularioAtualizar);
+
+    inputAtividadeAtualizar.value = atividade.atividade;
+    inputDataAtividadeAtualizar.setAttribute("value",atividade.dataAtividade);
+    selectTagsPrioridadeAtualizar.innerHTML = '';
+    arrayOpcoes.forEach((opcao) => {
+            const optionTagPropriedade = document.createElement('option');
+            optionTagPropriedade.value = opcao;
+            optionTagPropriedade.textContent = opcao;
+            selectTagsPrioridadeAtualizar.appendChild(optionTagPropriedade);
+    });
+    selectTagsPrioridadeAtualizar.value = atividade.tagPrioridade
 }
 
 function getOpcoes(){
@@ -61,23 +93,35 @@ function adicionarAtividade(){
 
 
 function main(){
-    buildAplication()
+    atualizar();
+    construirFormularioNovo();
     getOpcoes();
 
     click(botao, ()=>{
-        const novaOpcao = adicionarAtividade()
+        const novaOpcao = adicionarAtividade();
         if(!novaOpcao){
             return 
         }
         listaAtividades.push(novaOpcao);
-        refresh()
+        salvarLista();
+        atualizar();
         inputAtividade.value = "";
         inputDataAtividade.value = "";
         selectTagsPrioridade.value = arrayOpcoes[0];
     });
 }
 
-function refresh(){
+function salvarLista() {
+    let listaString = JSON.stringify(listaAtividades);
+    localStorage.setItem('lista', listaString);
+}
+
+function baixarLista() {
+    let listaString = localStorage.getItem('lista');
+    return JSON.parse(listaString) || [];
+}
+
+function atualizar(){
     let divListaDeAtividades = document.querySelector('.lista-de-atividades');
     limparListaDeAtividades(divListaDeAtividades);
 
@@ -117,42 +161,14 @@ function editarAtividade(ele){
         boxNovaAtividade.classList.add('none');
         boxListaAtividade.classList.add('none');
 
-        selectTagsPrioridadeAtualizar.required = true;
-        inputAtividadeAtualizar.id = 'input-atividade';
-        inputAtividadeAtualizar.type = 'text';
-        inputAtividadeAtualizar.placeholder = 'Informe a Atividade';
-        inputAtividadeAtualizar.required = true;
-        inputDataAtividadeAtualizar.id = 'input-data-atividade';
-        inputDataAtividadeAtualizar.type = 'date';
-        inputDataAtividadeAtualizar.required = true;
-        botaoAtualizar.textContent = 'Atualizar';
-        botaoCancelar.textContent = 'Cancelar';
-        botaoAtualizar.type = 'submit';
-        botaoCancelar.type = 'submit';
-        formularioAtualizar.appendChild(inputAtividadeAtualizar);
-        formularioAtualizar.appendChild(inputDataAtividadeAtualizar);
-        formularioAtualizar.appendChild(selectTagsPrioridadeAtualizar);
-        formularioAtualizar.appendChild(botaoAtualizar);
-        formularioAtualizar.appendChild(botaoCancelar);
-        boxEditarAtividade.appendChild(formularioAtualizar);
-
-        inputAtividadeAtualizar.value = atividade.atividade;
-        inputDataAtividadeAtualizar.setAttribute("value",atividade.dataAtividade);
-        selectTagsPrioridadeAtualizar.innerHTML = '';
-        arrayOpcoes.forEach((opcao) => {
-                const optionTagPropriedade = document.createElement('option');
-                optionTagPropriedade.value = opcao;
-                optionTagPropriedade.textContent = opcao;
-                selectTagsPrioridadeAtualizar.appendChild(optionTagPropriedade);
-        });
-        selectTagsPrioridadeAtualizar.value = atividade.tagPrioridade
+        construirFormularioEditar(atividade,formularioAtualizar,inputAtividadeAtualizar,inputDataAtividadeAtualizar,selectTagsPrioridadeAtualizar,botaoAtualizar,botaoCancelar,boxEditarAtividade);
         
         click(botaoCancelar, ()=>{
             boxEditarAtividade.classList.add('none');
             boxNovaAtividade.classList.remove('none');
             boxListaAtividade.classList.remove('none');
             formularioAtualizar.remove();
-            refresh();
+            atualizar();
         })
 
         click(botaoAtualizar, ()=>{
@@ -167,17 +183,19 @@ function editarAtividade(ele){
                 return;
             }
 
-            console.log(ele.value)
+            
             listaAtividades[ele.value].atividade = novaAtividade;
             listaAtividades[ele.value].dataAtividade = novaData;
             listaAtividades[ele.value].tagPrioridade = novaOpcao;
+
+            salvarLista();
 
             boxEditarAtividade.classList.add('none');
             boxNovaAtividade.classList.remove('none');
             boxListaAtividade.classList.remove('none');
 
             formularioAtualizar.remove();
-            refresh();
+            atualizar();
         })
     })
 }
@@ -185,7 +203,8 @@ function editarAtividade(ele){
 function removeAtividade(ele){
     click(ele, ()=>{
         listaAtividades.splice(ele.value, 1)
-        refresh();
+        salvarLista();
+        atualizar();
     })   
 }
 
@@ -198,7 +217,8 @@ function finalizarAtividade(ele, li){
             listaAtividades[ele.value].finalizar = false;
             li.classList.remove("done");
         }
-        refresh();
+        salvarLista();
+        atualizar();
     });
 }
 
