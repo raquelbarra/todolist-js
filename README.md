@@ -13,6 +13,8 @@ Criar um todolist que realize as ações:
 - Cadastrar, editar, listar e excluir tarefa
 - Marcar e desmarcar tarefa
 
+Acesse a demonstração: [CLIQUE AQUI!](https://raquelbarra.github.io/todolist-js/)
+
 Linkedin: <https://www.linkedin.com/in/raquel-barra/>
 
 
